@@ -27,6 +27,7 @@ class CategoryItem extends StatelessWidget {
         child: Text(
           title,
           style: Theme.of(context).textTheme.titleLarge,
+          textAlign: TextAlign.center,
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(
