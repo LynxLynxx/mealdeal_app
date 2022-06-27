@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screen/categories_screen.dart';
 import 'package:shop_app/screen/favorites_screen.dart';
+import 'package:shop_app/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class _TabsScreenState extends State<TabsScreen> {
         title: const Text("MealDeal"),
         centerTitle: true,
       ),
+      drawer: const MainDrawer(),
       body: _pages[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
