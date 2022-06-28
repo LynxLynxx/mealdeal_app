@@ -1,15 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/dummy_data.dart';
 import 'package:shop_app/screen/category_meals_screen.dart';
 import 'package:shop_app/screen/filters_screen.dart';
 import 'package:shop_app/screen/meal_detail_screen.dart';
 import 'package:shop_app/screen/tabs_screen.dart';
 
+import 'models/meal.dart';
+
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> filters = {
+    "gluten": false,
+    "lactose": false,
+    "vegan": false,
+    "vegetarian": false
+  };
+
+  List<Meal> avaliableMeals = dummyMEALS;
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      filters = filterData;
+
+      avaliableMeals = dummyMEALS.where((element) {
+        if (filters["gluten"]! && !element.isGlutenFree) {
+          return false;
+        }
+        if (filters["lactose"]! && !element.isLactoseFree) {
+          return false;
+        }
+        if (filters["vegan"]! && !element.isVegan) {
+          return false;
+        }
+        if (filters["vegetarian"]! && !element.isVegetarian) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -31,9 +70,13 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const TabsScreen(),
-        "/category-meals": (context) => const CategoryMealsScreen(),
+        "/category-meals": (context) =>
+            CategoryMealsScreen(avaliableMeals: avaliableMeals),
         MealDetailScreen.routeName: ((context) => const MealDetailScreen()),
-        FiltersScreen.routeName: ((context) => const FiltersScreen()),
+        FiltersScreen.routeName: ((context) => FiltersScreen(
+              saveFilters: _setFilters,
+              currentFilters: filters,
+            )),
       },
     );
   }
