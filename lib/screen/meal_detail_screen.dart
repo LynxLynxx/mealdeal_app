@@ -19,8 +19,12 @@ class MealDetailScreen extends StatelessWidget {
     );
   }
 
-  const MealDetailScreen({Key? key}) : super(key: key);
+  const MealDetailScreen(
+      {Key? key, required this.toggleFavorite, required this.isMealFavorite})
+      : super(key: key);
 
+  final Function toggleFavorite;
+  final Function isMealFavorite;
   @override
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
@@ -80,6 +84,10 @@ class MealDetailScreen extends StatelessWidget {
             const SizedBox(height: 40),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => toggleFavorite(mealId),
+        child: Icon(isMealFavorite(mealId) ? Icons.star : Icons.star_border),
       ),
     );
   }
